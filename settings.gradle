@@ -1,0 +1,6 @@
+rootProject.name = 'learning-dubboSample'
+include 'learning-dubboSample-api'
+include 'learning-dubboSample-domain'
+include 'learning-dubboSample-service'
+include 'learning-dubboSample-web'
+

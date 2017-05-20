@@ -1,0 +1,11 @@
+group 'own.jadezhang.learning'
+
+apply plugin: 'java'
+
+dependencies {
+
+    compile("own.jadezhang.base:base-common-biz:$baseCommonVersion")
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+

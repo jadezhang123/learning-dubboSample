@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="own.jadezhang.learning.dubboSample.dao.auth.IAuthUserDAO">
+
+    <sql id="Base_Column_List">
+        id,
+        name,
+        password,
+        phone,
+        salt,
+        status
+    </sql>
+    <insert id="insert" parameterType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        INSERT INTO auth_user (
+		    name
+		    ,password
+		    ,phone
+		    ,salt
+		    ,status
+        ) VALUES (
+                #{name}
+                ,#{password}
+                ,#{phone}
+                ,#{salt}
+                ,#{status}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+        	SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO auth_user (
+            name
+           ,password
+           ,phone
+           ,salt
+           ,status
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.name}
+                ,#{item.password}
+                ,#{item.phone}
+                ,#{item.salt}
+                ,#{item.status}
+            )
+        </foreach>
+    </insert>
+    
+    <!-- 更新 -->
+    <update id="update" parameterType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        UPDATE auth_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="password!=null">
+                password = #{password},
+            </if>
+            <if test="phone!=null">
+                phone = #{phone},
+            </if>
+            <if test="salt!=null">
+                salt = #{salt},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+	
+	<update id="updateMap" parameterType="java.util.Map">
+        UPDATE auth_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name!=null">
+                name = #{name},
+            </if>
+            <if test="password!=null">
+                password = #{password},
+            </if>
+            <if test="phone!=null">
+                phone = #{phone},
+            </if>
+            <if test="salt!=null">
+                salt = #{salt},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+        </trim>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE auth_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.name!=null">
+                name = #{update.name},
+            </if>
+            <if test="update.password!=null">
+                password = #{update.password},
+            </if>
+            <if test="update.phone!=null">
+                phone = #{update.phone},
+            </if>
+            <if test="update.salt!=null">
+                salt = #{update.salt},
+            </if>
+            <if test="update.status!=null">
+                status = #{update.status},
+            </if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.password!=null">
+                AND password = #{condition.password}
+            </if>
+            <if test="condition.phone!=null">
+                AND phone = #{condition.phone}
+            </if>
+            <if test="condition.salt!=null">
+                AND salt = #{condition.salt}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updateNull" parameterType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        UPDATE auth_user
+        <trim prefix="SET" suffixOverrides=",">
+            name = #{name},
+            password = #{password},
+            phone = #{phone},
+            salt = #{salt},
+            status = #{status},
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+    
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM auth_user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+    <!--根据list(ids)删除对象-->
+    <delete id="deleteByIds" parameterType="java.util.List">
+        DELETE FROM auth_user WHERE id in <foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+    </delete>
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM auth_user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="name!=null">
+                AND name = #{name}
+            </if>
+            <if test="password!=null">
+                AND password = #{password}
+            </if>
+            <if test="phone!=null">
+                AND phone = #{phone}
+            </if>
+            <if test="salt!=null">
+                AND salt = #{salt}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty">
+        DELETE FROM auth_user WHERE
+        ${property} = #{value}
+    </delete>
+    
+    <!--查询相关 -->
+    <select id="fetch" parameterType="java.lang.Long" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </select>
+
+    <select id="findOne" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="paging" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user
+        <where>
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+            <if test="condition.id!=null">
+                ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.name!=null">
+                ${condition.groupOp}   name  ${condition.name.op}  #{condition.name.data}
+            </if>
+            <if test="condition.password!=null">
+                ${condition.groupOp}   password  ${condition.password.op}  #{condition.password.data}
+            </if>
+            <if test="condition.phone!=null">
+                ${condition.groupOp}   phone  ${condition.phone.op}  #{condition.phone.data}
+            </if>
+            <if test="condition.salt!=null">
+                ${condition.groupOp}   salt  ${condition.salt.op}  #{condition.salt.data}
+            </if>
+            <if test="condition.status!=null">
+                ${condition.groupOp}   status  ${condition.status.op}  #{condition.status.data}
+            </if>
+        </where>
+
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(*) FROM auth_user
+        <where>
+            <if test="id!=null">
+                ${groupOp} id ${id.op}  #{id.data}
+            </if>
+            <if test="name!=null">
+                ${groupOp} name ${name.op}  #{name.data}
+            </if>
+            <if test="password!=null">
+                ${groupOp} password ${password.op}  #{password.data}
+            </if>
+            <if test="phone!=null">
+                ${groupOp} phone ${phone.op}  #{phone.data}
+            </if>
+            <if test="salt!=null">
+                ${groupOp} salt ${salt.op}  #{salt.data}
+            </if>
+            <if test="status!=null">
+                ${groupOp} status ${status.op}  #{status.data}
+            </if>
+        </where>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id like CONCAT('%', #{condition.id} , '%')
+            </if>
+            <if test="condition.name!=null">
+                AND name like CONCAT('%', #{condition.name} , '%')
+            </if>
+            <if test="condition.password!=null">
+                AND password like CONCAT('%', #{condition.password} , '%')
+            </if>
+            <if test="condition.phone!=null">
+                AND phone like CONCAT('%', #{condition.phone} , '%')
+            </if>
+            <if test="condition.salt!=null">
+                AND salt like CONCAT('%', #{condition.salt} , '%')
+            </if>
+            <if test="condition.status!=null">
+                AND status like CONCAT('%', #{condition.status} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryList" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.password!=null">
+                AND password = #{condition.password}
+            </if>
+            <if test="condition.phone!=null">
+                AND phone = #{condition.phone}
+            </if>
+            <if test="condition.salt!=null">
+                AND salt = #{condition.salt}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM auth_user
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.name!=null">
+                AND name = #{condition.name}
+            </if>
+            <if test="condition.password!=null">
+                AND password = #{condition.password}
+            </if>
+            <if test="condition.phone!=null">
+                AND phone = #{condition.phone}
+            </if>
+            <if test="condition.salt!=null">
+                AND salt = #{condition.salt}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        limit 0,1
+    </select>
+
+</mapper>
