@@ -1,1 +1,3 @@
-codgen-示例应用子系统
+codgen生成
+
+dubbo风格的应用框架
