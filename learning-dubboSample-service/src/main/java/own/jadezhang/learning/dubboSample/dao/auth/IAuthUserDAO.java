@@ -20,6 +20,7 @@
 
 package own.jadezhang.learning.dubboSample.dao.auth;
 
+import org.springframework.stereotype.Repository;
 import own.jadezhang.base.common.dao.IBaseDAO;
 import own.jadezhang.learning.dubboSample.domain.auth.AuthUser;
 
@@ -27,6 +28,7 @@ import own.jadezhang.learning.dubboSample.domain.auth.AuthUser;
  * 《用户表》 数据访问接口
  *  @author zjw
  */
+ @Repository
 public interface IAuthUserDAO extends IBaseDAO<AuthUser> {
 
 

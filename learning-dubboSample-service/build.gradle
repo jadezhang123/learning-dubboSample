@@ -9,6 +9,7 @@ dependencies {
     compile project(':learning-dubboSample-api')
 
     compile("own.jadezhang.base:base-common-biz:$baseCommonVersion")
+    compile("own.jadezhang.learning:learning-cumquat-spring-zkconfig:0.0.2")
 
     //dubbo需要的jar包
     compile('com.alibaba:dubbo:2.5.3') {

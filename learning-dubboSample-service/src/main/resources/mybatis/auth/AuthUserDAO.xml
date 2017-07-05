@@ -5,54 +5,62 @@
 
     <sql id="Base_Column_List">
         id,
+        code,
         name,
         password,
         phone,
         salt,
-        status
+        state
     </sql>
     <insert id="insert" parameterType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
-        INSERT INTO auth_user (
-		    name
+        INSERT INTO shiro_auth_user (
+		    code
+		    ,name
 		    ,password
 		    ,phone
 		    ,salt
-		    ,status
+		    ,state
         ) VALUES (
-                #{name}
+                #{code}
+                ,#{name}
                 ,#{password}
                 ,#{phone}
                 ,#{salt}
-                ,#{status}
-        )
+                ,#{state}
+    )
         <selectKey resultType="java.lang.Long" keyProperty="id">
         	SELECT LAST_INSERT_ID() AS ID
         </selectKey>
     </insert>
 
     <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO auth_user (
-            name
+        INSERT INTO shiro_auth_user (
+            code
+           ,name
            ,password
            ,phone
            ,salt
-           ,status
+           ,state
         ) VALUES
         <foreach collection="list" item="item" separator=",">
             (
-                #{item.name}
+                #{item.code}
+                ,#{item.name}
                 ,#{item.password}
                 ,#{item.phone}
                 ,#{item.salt}
-                ,#{item.status}
-            )
+                ,#{item.state}
+     )
         </foreach>
     </insert>
     
     <!-- 更新 -->
     <update id="update" parameterType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
-        UPDATE auth_user
+        UPDATE shiro_auth_user
         <trim prefix="SET" suffixOverrides=",">
+            <if test="code!=null">
+                code = #{code},
+            </if>
             <if test="name!=null">
                 name = #{name},
             </if>
@@ -65,8 +73,8 @@
             <if test="salt!=null">
                 salt = #{salt},
             </if>
-            <if test="status!=null">
-                status = #{status},
+            <if test="state!=null">
+                state = #{state},
             </if>
         </trim>
         WHERE
@@ -74,8 +82,11 @@
     </update>
 	
 	<update id="updateMap" parameterType="java.util.Map">
-        UPDATE auth_user
+        UPDATE shiro_auth_user
         <trim prefix="SET" suffixOverrides=",">
+            <if test="code!=null">
+                code = #{code},
+            </if>
             <if test="name!=null">
                 name = #{name},
             </if>
@@ -88,16 +99,19 @@
             <if test="salt!=null">
                 salt = #{salt},
             </if>
-            <if test="status!=null">
-                status = #{status},
+            <if test="state!=null">
+                state = #{state},
             </if>
         </trim>
         WHERE id = #{id}
     </update>
 
     <update id="updateByCondition">
-        UPDATE auth_user
+        UPDATE shiro_auth_user
         <trim prefix="SET" suffixOverrides=",">
+            <if test="update.code!=null">
+                code = #{update.code},
+            </if>
             <if test="update.name!=null">
                 name = #{update.name},
             </if>
@@ -110,11 +124,14 @@
             <if test="update.salt!=null">
                 salt = #{update.salt},
             </if>
-            <if test="update.status!=null">
-                status = #{update.status},
+            <if test="update.state!=null">
+                state = #{update.state},
             </if>
         </trim>
         <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.code!=null">
+                AND code = #{condition.code}
+            </if>
             <if test="condition.name!=null">
                 AND name = #{condition.name}
             </if>
@@ -127,20 +144,21 @@
             <if test="condition.salt!=null">
                 AND salt = #{condition.salt}
             </if>
-            <if test="condition.status!=null">
-                AND status = #{condition.status}
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
             </if>
         </trim>
     </update>
 
     <update id="updateNull" parameterType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
-        UPDATE auth_user
+        UPDATE shiro_auth_user
         <trim prefix="SET" suffixOverrides=",">
+            code = #{code},
             name = #{name},
             password = #{password},
             phone = #{phone},
             salt = #{salt},
-            status = #{status},
+            state = #{state},
         </trim>
         WHERE
         id = #{id}
@@ -148,7 +166,7 @@
     
     <!-- 按Id删除 -->
     <delete id="deleteById" parameterType="java.lang.Long">
-        DELETE FROM auth_user
+        DELETE FROM shiro_auth_user
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             AND id = #{id}
         </trim>
@@ -156,14 +174,17 @@
 
     <!--根据list(ids)删除对象-->
     <delete id="deleteByIds" parameterType="java.util.List">
-        DELETE FROM auth_user WHERE id in <foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
+        DELETE FROM shiro_auth_user WHERE id in <foreach collection="list" item="id" open="(" separator="," close=")">#{id}</foreach>
     </delete>
 
     <delete id="deleteByCondition" parameterType="java.util.Map">
-        DELETE FROM auth_user
+        DELETE FROM shiro_auth_user
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="id!=null">
                 AND id = #{id}
+            </if>
+            <if test="code!=null">
+                AND code = #{code}
             </if>
             <if test="name!=null">
                 AND name = #{name}
@@ -177,14 +198,14 @@
             <if test="salt!=null">
                 AND salt = #{salt}
             </if>
-            <if test="status!=null">
-                AND status = #{status}
+            <if test="state!=null">
+                AND state = #{state}
             </if>
         </trim>
     </delete>
 
     <delete id="deleteByProperty">
-        DELETE FROM auth_user WHERE
+        DELETE FROM shiro_auth_user WHERE
         ${property} = #{value}
     </delete>
     
@@ -192,7 +213,7 @@
     <select id="fetch" parameterType="java.lang.Long" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user
+        FROM shiro_auth_user
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             AND id = #{id}
         </trim>
@@ -201,7 +222,7 @@
     <select id="findOne" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user WHERE
+        FROM shiro_auth_user WHERE
         ${property} = #{value}
         LIMIT 0,1
     </select>
@@ -209,7 +230,7 @@
     <select id="findList" parameterType="java.util.Map" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user WHERE
+        FROM shiro_auth_user WHERE
         ${property} = #{value}
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
@@ -219,7 +240,7 @@
     <select id="findAll" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user
+        FROM shiro_auth_user
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
         </if>
@@ -228,13 +249,16 @@
     <select id="paging" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user
+        FROM shiro_auth_user
         <where>
             <if test="condition.whereSql != null">
                 and id in (#{condition.whereSql})
             </if>
             <if test="condition.id!=null">
                 ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.code!=null">
+                ${condition.groupOp}   code  ${condition.code.op}  #{condition.code.data}
             </if>
             <if test="condition.name!=null">
                 ${condition.groupOp}   name  ${condition.name.op}  #{condition.name.data}
@@ -248,8 +272,8 @@
             <if test="condition.salt!=null">
                 ${condition.groupOp}   salt  ${condition.salt.op}  #{condition.salt.data}
             </if>
-            <if test="condition.status!=null">
-                ${condition.groupOp}   status  ${condition.status.op}  #{condition.status.data}
+            <if test="condition.state!=null">
+                ${condition.groupOp}   state  ${condition.state.op}  #{condition.state.data}
             </if>
         </where>
 
@@ -262,10 +286,13 @@
     </select>
 
     <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
-        SELECT count(*) FROM auth_user
+        SELECT count(*) FROM shiro_auth_user
         <where>
             <if test="id!=null">
                 ${groupOp} id ${id.op}  #{id.data}
+            </if>
+            <if test="code!=null">
+                ${groupOp} code ${code.op}  #{code.data}
             </if>
             <if test="name!=null">
                 ${groupOp} name ${name.op}  #{name.data}
@@ -279,8 +306,8 @@
             <if test="salt!=null">
                 ${groupOp} salt ${salt.op}  #{salt.data}
             </if>
-            <if test="status!=null">
-                ${groupOp} status ${status.op}  #{status.data}
+            <if test="state!=null">
+                ${groupOp} state ${state.op}  #{state.data}
             </if>
         </where>
     </select>
@@ -288,10 +315,13 @@
     <select id="like" parameterType="java.util.Map" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user
+        FROM shiro_auth_user
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="condition.id!=null">
                 AND id like CONCAT('%', #{condition.id} , '%')
+            </if>
+            <if test="condition.code!=null">
+                AND code like CONCAT('%', #{condition.code} , '%')
             </if>
             <if test="condition.name!=null">
                 AND name like CONCAT('%', #{condition.name} , '%')
@@ -305,8 +335,8 @@
             <if test="condition.salt!=null">
                 AND salt like CONCAT('%', #{condition.salt} , '%')
             </if>
-            <if test="condition.status!=null">
-                AND status like CONCAT('%', #{condition.status} , '%')
+            <if test="condition.state!=null">
+                AND state like CONCAT('%', #{condition.state} , '%')
             </if>
         </trim>
         <if test="orderBy!=null">
@@ -317,10 +347,13 @@
     <select id="queryList" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user
+        FROM shiro_auth_user
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="condition.id!=null">
                 AND id = #{condition.id}
+            </if>
+            <if test="condition.code!=null">
+                AND code = #{condition.code}
             </if>
             <if test="condition.name!=null">
                 AND name = #{condition.name}
@@ -334,8 +367,8 @@
             <if test="condition.salt!=null">
                 AND salt = #{condition.salt}
             </if>
-            <if test="condition.status!=null">
-                AND status = #{condition.status}
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
             </if>
         </trim>
         <if test="orderBy!=null">
@@ -346,10 +379,13 @@
     <select id="queryOne" resultType="own.jadezhang.learning.dubboSample.domain.auth.AuthUser">
         SELECT
         <include refid="Base_Column_List" />
-        FROM auth_user
+        FROM shiro_auth_user
         <trim prefix="WHERE" prefixOverrides="AND | OR">
             <if test="condition.id!=null">
                 AND id = #{condition.id}
+            </if>
+            <if test="condition.code!=null">
+                AND code = #{condition.code}
             </if>
             <if test="condition.name!=null">
                 AND name = #{condition.name}
@@ -363,8 +399,8 @@
             <if test="condition.salt!=null">
                 AND salt = #{condition.salt}
             </if>
-            <if test="condition.status!=null">
-                AND status = #{condition.status}
+            <if test="condition.state!=null">
+                AND state = #{condition.state}
             </if>
         </trim>
         <if test="orderBy!=null">

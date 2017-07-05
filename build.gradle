@@ -1,5 +1,5 @@
 
-version '0.0.1-SNATSHOT'
+version '0.0.2'
 
 apply plugin: 'java'
 apply from: 'dependencies.gradle'
@@ -9,7 +9,7 @@ sourceCompatibility = 1.7
 allprojects {
     /*坐标*/
     group 'own.jadezhang.learning'
-    version '0.0.1-SNATSHOT'
+    version '0.0.2'
     /*自带插件*/
     apply plugin: 'java'
     apply plugin: 'maven'
