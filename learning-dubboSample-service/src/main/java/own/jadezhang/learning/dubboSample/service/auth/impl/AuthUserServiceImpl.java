@@ -18,7 +18,7 @@
 {*****************************************************************************	
 */
 
-package own.jadezhang.learning.dubboSample.service.impl.auth;
+package own.jadezhang.learning.dubboSample.service.auth.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

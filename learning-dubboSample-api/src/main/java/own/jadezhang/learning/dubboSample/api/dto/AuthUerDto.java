@@ -1,12 +1,13 @@
 package own.jadezhang.learning.dubboSample.api.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by Zhang Junwei on 2017/7/4.
  */
-public class AuthUerDto {
+public class AuthUerDto implements Serializable{
     private String code; //用户code
     private String name; //用户名
-    private String password; //加密后的密码
     private String phone; //手机号
     private Integer state; //用户状态；0：活跃；1：锁定
 
@@ -24,14 +25,6 @@ public class AuthUerDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {

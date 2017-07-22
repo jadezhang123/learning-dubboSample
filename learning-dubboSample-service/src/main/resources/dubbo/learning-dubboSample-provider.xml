@@ -9,7 +9,7 @@
 		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
     <!-- 提供方应用信息，用于计算依赖关系 -->
-    <dubbo:application name="learning-dubboSample-provider"/>
+    <!--<dubbo:application name="learning-dubboSample-provider"/>-->
 
     <!-- 使用zookeeper注册中心暴露服务地址 -->
     <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address.zk}" />
@@ -18,7 +18,7 @@
     <dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" />
 
     <!-- 声明需要暴露的服务接口 -->
-    <dubbo:service interface="own.jadezhang.learning.dubboSample.api.rpc.IUserService4Rpc" ref="userService4Rpc4RpcImpl"/>
+    <dubbo:service interface="own.jadezhang.learning.dubboSample.api.rpc.IUserService4Rpc" ref="userService4Rpc4RpcImpl" timeout="60000"/>
 
     <!-- 和本地bean一样实现服务 -->
     <bean id="userService4Rpc4RpcImpl" class="own.jadezhang.learning.dubboSample.api.rpc.impl.UserService4RpcImpl"/>
