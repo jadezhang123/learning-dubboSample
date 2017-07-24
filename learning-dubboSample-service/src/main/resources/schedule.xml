@@ -17,4 +17,11 @@
         </property>
     </bean>
 
+    <bean id="B=batchTaskManager" class="own.jadezhang.learning.dubboSample.service.basic.BatchTaskManager">
+        <property name="taskListenerList">
+            <list>
+            </list>
+        </property>
+    </bean>
+
 </beans>

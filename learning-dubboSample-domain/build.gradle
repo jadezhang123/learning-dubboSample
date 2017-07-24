@@ -4,7 +4,7 @@ apply plugin: 'java'
 
 dependencies {
 
-    compile("own.jadezhang.base:base-common-biz:$baseCommonVersion")
+    compile("own.jadezhang.base:base-common-domain:$baseCommonVersion")
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
 }
