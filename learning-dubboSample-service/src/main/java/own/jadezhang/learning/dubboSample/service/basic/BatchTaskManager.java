@@ -43,26 +43,31 @@ public class BatchTaskManager implements IScheduleTaskDealSingle<BasicBatchTask>
             return false;
         }
 
-        task.setDealTime(System.currentTimeMillis());
+        long dealTime = System.currentTimeMillis();
+        task.setDealTime(dealTime);
         int dealStatus = TaskDealStatusEnum.SUCCESS.getValue();
-        String dealDesc = TaskDealStatusEnum.SUCCESS.getName();
         boolean result = true;
+        StringBuilder dealDescBuilder = new StringBuilder();
         try {
             ResultDto resultDTO = taskListener.dealTask(task);
+            long spentTime = System.currentTimeMillis() - dealTime;
+            dealDescBuilder.append("[").append(spentTime).append("]");
             if (resultDTO.isSuccess()) {
-                dealDesc = "处理成功:" + resultDTO.getMsg();
+                dealDescBuilder.append("处理成功:");
             } else {
                 dealStatus = TaskDealStatusEnum.FAILURE.getValue();
-                dealDesc = "处理失败:" + resultDTO.getMsg();
+                dealDescBuilder.append("处理失败:");
             }
+            dealDescBuilder.append(resultDTO.getMsg());
         } catch (Exception e) {
-            logger.warn("deal task FAIL for {}", e.getMessage());
+            logger.warn("deal schedule FAIL for {}", e.getMessage());
             dealStatus = TaskDealStatusEnum.FAILURE.getValue();
-            dealDesc = "处理失败:" + e.getCause();
+            dealDescBuilder.append("处理失败:").append(e.getCause());
             result = false;
         } finally {
             try {
                 //更新任务状态
+                String dealDesc = dealDescBuilder.toString();
                 task.setDealStatus(dealStatus);
                 if (dealDesc.length() > 500) {
                     dealDesc = StringUtils.substring(dealDesc, 0, 490) + "......";
@@ -72,7 +77,7 @@ public class BatchTaskManager implements IScheduleTaskDealSingle<BasicBatchTask>
                 basicBatchTaskService.update(task);
                 taskListener.afterDealTask(task);
             } catch (Exception e) {
-                logger.error("update task status error for {}", e.getMessage());
+                logger.error("update schedule status error for {}", e.getMessage());
             }
             return result;
         }
@@ -115,7 +120,7 @@ public class BatchTaskManager implements IScheduleTaskDealSingle<BasicBatchTask>
         basicBatchTaskParamEx.setTaskQueueNum(taskQueueNum);
         basicBatchTaskParamEx.setContainIds(condition.toString());
         basicBatchTaskParamEx.setStartTime(System.currentTimeMillis());
-        basicBatchTaskList = basicBatchTaskService.queryTaskPage(basicBatchTaskParamEx.toMap(), basicBatchTaskParamEx.F_ID, SqlOrderEnum.ASC, 0, eachFetchDataNum);
+        basicBatchTaskList = basicBatchTaskService.queryTaskPage(basicBatchTaskParamEx.toMap(), basicBatchTaskParamEx.F_ID, SqlOrderEnum.ASC, 1, eachFetchDataNum);
         return basicBatchTaskList;
     }
 

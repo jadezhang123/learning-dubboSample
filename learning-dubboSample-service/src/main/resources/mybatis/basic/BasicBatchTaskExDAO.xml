@@ -3,13 +3,13 @@
 
 <mapper namespace="own.jadezhang.learning.dubboSample.dao.basic.IBasicBatchTaskDAO">
     <!-- 在这里存放用户自定义的映射配置（注：BasicBatchTaskDAO.xml里各节点的ID不能在这里重复出现）  -->
-    <select id="queryTaskPage" resultType="cn.thinkjoy.qky.grow.domain.basic.BasicBatchTask">
+    <select id="queryTaskPage" resultType="own.jadezhang.learning.dubboSample.domain.basic.BasicBatchTask">
         SELECT
         <include refid="Base_Column_List"/>
-        FROM grow_basic_batch_task
+        FROM schedule_basic_batch_task
         <where>
             <if test="condition.containIds != null">
-                and mod(id,#{condition.taskItemNum}) in (${condition.containIds})
+                and mod(id,#{condition.taskQueueNum}) in (${condition.containIds})
             </if>
             <if test="condition.code!=null">
                 AND code = #{condition.code}

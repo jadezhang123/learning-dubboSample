@@ -22,4 +22,5 @@ public class UserController {
         AuthUerDto user = userService4Rpc.findUser("082ba75a22a648a680e3ea7982e7ecdb");
         return user;
     }
+
 }
