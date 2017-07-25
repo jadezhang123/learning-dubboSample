@@ -29,5 +29,23 @@ public class BasicBatchTaskParamEx extends BasicBatchTaskParam {
 	private static final long serialVersionUID = 1L;
 	
 	//针对BasicBatchTaskParam实体在这里增加额外的属性和对应的get和set方法
-	
+
+	private int taskQueueNum;
+	private String containIds;
+
+	public int getTaskQueueNum() {
+		return taskQueueNum;
+	}
+
+	public void setTaskQueueNum(int taskQueueNum) {
+		this.taskQueueNum = taskQueueNum;
+	}
+
+	public String getContainIds() {
+		return containIds;
+	}
+
+	public void setContainIds(String containIds) {
+		this.containIds = containIds;
+	}
 }

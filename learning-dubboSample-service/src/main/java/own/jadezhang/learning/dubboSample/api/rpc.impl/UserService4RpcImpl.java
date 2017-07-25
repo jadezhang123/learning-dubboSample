@@ -24,7 +24,6 @@ public class UserService4RpcImpl implements IUserService4Rpc {
         }
         userDto.setCode(one.getCode());
         userDto.setName(one.getName());
-        userDto.setPassword(one.getPassword());
         userDto.setPhone(one.getPhone());
         return userDto;
     }

@@ -112,8 +112,8 @@ public class BatchTaskManager implements IScheduleTaskDealSingle<BasicBatchTask>
 
         BasicBatchTaskParamEx basicBatchTaskParamEx = new BasicBatchTaskParamEx();
         basicBatchTaskParamEx.setDealStatus(TaskDealStatusEnum.WAITING.getValue());
-        //basicBatchTaskParamEx.setTaskItemNum(taskItemNum);
-        //basicBatchTaskParamEx.setContainIds(condition.toString());
+        basicBatchTaskParamEx.setTaskQueueNum(taskQueueNum);
+        basicBatchTaskParamEx.setContainIds(condition.toString());
         basicBatchTaskParamEx.setStartTime(System.currentTimeMillis());
         basicBatchTaskList = basicBatchTaskService.queryTaskPage(basicBatchTaskParamEx.toMap(), basicBatchTaskParamEx.F_ID, SqlOrderEnum.ASC, 0, eachFetchDataNum);
         return basicBatchTaskList;
