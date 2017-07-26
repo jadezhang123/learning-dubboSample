@@ -11,12 +11,12 @@
     </appender>
 
     <!-- 这里平时的level为WARN，跟踪问题时才设置为DEBUG -->
-    <logger name="cn.thinkjoy" level="WARN">
+    <logger name="own.jadezhang.learning" level="DEBUG">
         <appender-ref ref="DEBUG-FILE-APPENDER"/>
         <appender-ref ref="WARN-FILE-APPENDER" />
     </logger>
 
-    <root level="DEBUG">
+    <root level="warn">
         <appender-ref ref="STDOUT-APPENDER" />
     </root>
 </configuration>

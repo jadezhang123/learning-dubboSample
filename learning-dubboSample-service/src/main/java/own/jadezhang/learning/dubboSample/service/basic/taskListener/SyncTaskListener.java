@@ -45,13 +45,13 @@ public class SyncTaskListener extends ABatchTaskListener {
                 jack = new AuthUser();
                 jack.setCode(CommonUtil.makeUUID());
                 jack.setName("jack");
-                jack.setPassword("sync");
+                jack.setPassword("" + task.getId());
                 jack.setSalt("salt");
                 jack.setPhone("15671569029");
                 jack.setState(0);
                 authUserService.add(jack);
             } else {
-                jack.setName(task.getName());
+                jack.setPassword(jack.getPassword() + "-" + task.getId());
                 authUserService.update(jack);
             }
         } catch (Exception e) {
