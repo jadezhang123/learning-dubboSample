@@ -13,6 +13,6 @@
 
     <dubbo:registry protocol="zookeeper" address="${dubbo.registry.address.zk}" />
 
-    <dubbo:reference id="userService4Rpc" interface="own.jadezhang.learning.dubboSample.api.rpc.IUserService4Rpc" check="false" />
+    <dubbo:reference id="userService4Rpc" interface="own.jadezhang.learning.dubboSample.api.rpc.IUserService4Rpc" check="false"/>
 
 </beans>
