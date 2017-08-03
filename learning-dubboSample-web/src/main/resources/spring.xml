@@ -4,5 +4,24 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
     <!-- 引入service的spring配置文件 -->
     <import resource="classpath:spring-service.xml"/>
+    <!--
+     * Exposes the SessionRepositoryFilter as a bean named
+     * "springSessionRepositoryFilter". In order to use this a single
+     * RedisConnectionFactory must be exposed as a Bean.-->
+    <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
+
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="minIdle" value="${redis.pool.minIdle}"/>
+        <property name="maxIdle" value="${redis.pool.maxIdle}"/>
+        <property name="maxTotal" value="${redis.pool.maxTotal}"/>
+        <property name="maxWaitMillis" value="${redis.pool.maxWaitMillis}"/>
+        <property name="minEvictableIdleTimeMillis" value="${redis.pool.minEvictableIdleTimeMillis}"/>
+    </bean>
+
+    <bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <property name="hostName" value="${redis.host}"/>
+        <property name="port" value="${redis.port}"/>
+        <property name="poolConfig" ref="jedisPoolConfig"/>
+    </bean>
 
 </beans>
