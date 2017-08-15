@@ -11,6 +11,7 @@ import own.jadezhang.learning.dubboSample.common.ResultDto;
 import own.jadezhang.learning.dubboSample.domain.auth.AuthUser;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * Created by Zhang Junwei on 2017/7/22.
@@ -41,8 +42,10 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = "/index")
     public ResultDto index(HttpServletRequest request) {
-        AuthUser user = (AuthUser) request.getSession().getAttribute(Constant.LOGIN_USER);
+        HttpSession session = request.getSession();
+        AuthUser user = (AuthUser) session.getAttribute(Constant.LOGIN_USER);
         if (user != null) {
+            user.setCode(session.getId());
             return new ResultDto(true, user);
         }
         return new ResultDto(false, "当前用户未登录");
